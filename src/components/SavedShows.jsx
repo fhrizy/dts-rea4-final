@@ -9,7 +9,6 @@ import { selectSavedMovie, selectWatchLater } from '../store/reducers/accountRed
 const SavedShows = ({movie}) => {
   const getsavedMovie = useSelector(selectSavedMovie);
   const getwatchLater = useSelector(selectWatchLater);
-  console.log(movie)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,11 +24,10 @@ const SavedShows = ({movie}) => {
   const remove = (id) => {
     const newSavedMovie = getsavedMovie?.movies.filter((movie) => movie.id !== id);
     const newWatchLater = getwatchLater?.movies.filter((movie) => movie.id !== id);
-    console.log(newSavedMovie, newWatchLater)
     if (movie.rowID === 0){
-      dispatch(UPDATESAVEDMOVIE({remove: true, movies: newSavedMovie[0] || []}));
+      dispatch(UPDATESAVEDMOVIE({remove: true, movies: newSavedMovie || []}));
     } else {
-      dispatch(UPDATEWATCHLATER({remove: true, movies: newWatchLater[0] || []}));
+      dispatch(UPDATEWATCHLATER({remove: true, movies: newWatchLater || []}));
     }
   }
 

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const state = {
+const initialState = {
   savedMovie: {
     rowID: 0,
     title: "My Show",
@@ -12,7 +12,6 @@ const state = {
     movies: [],
   },
 };
-const initialState = state;
 
 const accountReducer = createSlice({
   name: "account",
@@ -26,20 +25,20 @@ const accountReducer = createSlice({
       }
     },
     UPDATEWATCHLATER: (state, action) => {
-      console.log(action.payload);
       if (action.payload.remove === true) {
         state.watchLater.movies = action.payload.movies;
       } else {
         state.watchLater.movies.push(action.payload);
       }
     },
+    EMPTYACCOUNT: (state, action) => {
+      state.savedMovie.movies = [];
+      state.watchLater.movies = [];
+    },
   },
 });
 
-export const {
-  UPDATESAVEDMOVIE,
-  UPDATEWATCHLATER,
-} = accountReducer.actions;
+export const { UPDATESAVEDMOVIE, UPDATEWATCHLATER, EMPTYACCOUNT } = accountReducer.actions;
 
 export const selectSavedMovie = (state) => state.account.savedMovie;
 export const selectWatchLater = (state) => state.account.watchLater;

@@ -19,15 +19,15 @@ function MovieDetail(props) {
   const movie = useSelector(selectMovieDetail);
   const getIndex = mid?.split("-")[0];
   const getId = mid?.split("-")[1];
-  
+
   useEffect(() => {
     if (movies.length === 0) {
       navigate("/");
     }
-    dispatch(movieDetail({fetchURL: `movie/${getId}?language=en-US`}));
+    dispatch(movieDetail({ fetchURL: `movie/${getId}?language=en-US` }));
     const params = {
       fetchURL: `movie/${getId}/recommendations?language=en-US`,
-      rowID: movies?.length,
+      rowID: "5",
       title: "Recomendations for you",
     };
     dispatch(getMovieCollection(params));
@@ -39,7 +39,7 @@ function MovieDetail(props) {
     movies.length !== 0 && (
       <>
         <Main index={getIndex} movie={movie} />
-        <Row index={movies?.length - 1} movie={movies[movies?.length - 1] !== undefined ? movies[movies?.length - 1] : {}} />
+        <Row index={"5"} movie={movies[5] !== undefined ? movies[5] : {}} />
       </>
     )
   );

@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 const Account = (props) => {
   const savedMovie = useSelector(selectSavedMovie);
   const watchLater = useSelector(selectWatchLater);
-  console.log(savedMovie, watchLater);
   document.title = "Account";
   return (
     <>

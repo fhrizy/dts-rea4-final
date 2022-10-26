@@ -6,7 +6,7 @@ import Row from '../components/Row'
 import requests from '../Requests';
 
 const Home = () => {
-  document.title = "Home";
+  document.title = "NETTHINK";
   const movies = useSelector(selectMovieCollection);
   const moviesIndex = movies?.length >= 5 && Math.floor(Math.random() * movies?.length)
   const randomSubMovies = movies?.length >= 5 && movies[moviesIndex];

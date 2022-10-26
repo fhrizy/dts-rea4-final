@@ -4,6 +4,7 @@ import { UserAuth } from "../context/AuthContext";
 import { IoSearchCircle, IoCloseCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { searchMovie, selectMovieCollection } from "../store/reducers/movieReducer";
+import { EMPTYACCOUNT } from "../store/reducers/accountReducer";
 
 const Navbar = () => {
   const { user, logOut } = UserAuth();
@@ -13,10 +14,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  // console.log(user.email)
 
   const handleLogout = async () => {
     try {
+      dispatch(EMPTYACCOUNT());
       await logOut();
       navigate("/");
     } catch (error) {
@@ -27,7 +28,6 @@ const Navbar = () => {
   const closeSearch = () => {
     setSearch("");
     setOnBlur(!onBlur);
-    navigate("/");
   };
 
   const handleSearch = () => {
@@ -35,6 +35,7 @@ const Navbar = () => {
       searchMovie({
         fetchURL: "search/movie",
         params: { query: search?.toLowerCase(), page: 1 },
+        title: "search"
       })
     );
     navigate({pathname: "/movie/search", search: `?query=${search?.toLowerCase()}&rowID=${movies?.length}`})
@@ -44,7 +45,7 @@ const Navbar = () => {
     <div className="flex items-center justify-between p-4 z-[100] w-full fixed">
       <Link to="/">
         <h1 className="text-red-600 text-4xl font-bold cursor-pointer">
-          NETFLIX
+          NETTHINK
         </h1>
       </Link>
       <div className="flex flex-row gap-x-2 items-center w-6/12 justify-end">

@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { http_get } from "../../context/helper/axios";
 
-const state = {
+const initialState = {
   movieCollection: [],
   searchMovie: [],
   movieDetail: {},
 };
-const initialState = state;
 
 export const getMovieCollection = createAsyncThunk(
   "movie/get-movie-collection",
@@ -85,9 +84,9 @@ const movieReducer = createSlice({
       })
       .addCase(searchMovie.fulfilled, (state, action) => {
         if (action.meta.arg.params.page > 1) {
-          state.movieCollection[state.movieCollection.length] = {...state.movieCollection[state.movieCollection.length], movies: [...state.movieCollection[6].movies, ...action.payload.data.results]};
+          state.searchMovie.push(...action.payload.data.results);
         } else {
-          state.movieCollection[state.movieCollection.length] = {rowID: state.movieCollection.length, title: "Search", movies: action.payload.data.results};
+          state.searchMovie = action.payload.data.results
         }
       })
       .addCase(movieDetail.fulfilled, (state, action) => {
