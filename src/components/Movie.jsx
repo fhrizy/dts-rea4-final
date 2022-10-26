@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -6,8 +6,6 @@ import { db } from '../firebase';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 const Movie = ({ item, index }) => {
-  const [like, setLike] = useState(false);
-  const [saved, setSaved] = useState(false);
   const { user } = UserAuth();
   const navigate = useNavigate();
 
@@ -15,8 +13,6 @@ const Movie = ({ item, index }) => {
 
   const saveShow = async () => {
     if (user?.email) {
-      setLike(!like);
-      setSaved(true);
       await updateDoc(movieID, {
         savedShows: arrayUnion({
           id: item.id,
@@ -42,7 +38,7 @@ const Movie = ({ item, index }) => {
             {item?.title}
           </p>
           <p onClick={saveShow}>
-            {like ? (
+            {item.savedMovie ? (
               <FaHeart className='absolute top-4 left-4 text-gray-300' />
             ) : (
               <FaRegHeart className='absolute top-4 left-4 text-gray-300' />
