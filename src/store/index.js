@@ -16,7 +16,7 @@ import movieReducer from "./reducers/movieReducer";
 const persistConfig = {
   key: "root",
   version: 1,
-  blacklist: ["movie"],
+  blacklist: ["movie", "account"],
   storage,
 };
 

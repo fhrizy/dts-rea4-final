@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 
 const Signup = () => {
+  document.title = "Sign Up";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signUp } = UserAuth();

@@ -1,8 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const state = {
-  savedMovie: [],
-  watchLater: [],
+  savedMovie: {
+    rowID: 0,
+    title: "My Show",
+    movies: [],
+  },
+  watchLater: {
+    rowID: 1,
+    title: "Watch Later",
+    movies: [],
+  },
 };
 const initialState = state;
 
@@ -11,10 +19,10 @@ const accountReducer = createSlice({
   initialState,
   reducers: {
     UPDATESAVEDMOVIE: (state, action) => {
-      state.savedMovie.push(action.payload);
+      state.savedMovie.movies.push(action.payload);
     },
     UPDATEWATCHLATER: (state, action) => {
-      state.watchLater.push(action.payload);
+      state.watchLater.movies.push(action.payload);
     },
   },
 });

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { IoSearchCircle, IoCloseCircle } from "react-icons/io5";
-import { useDispatch } from "react-redux";
-import { searchMovie } from "../store/reducers/movieReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { searchMovie, selectMovieCollection } from "../store/reducers/movieReducer";
 
-const Navbar = (props) => {
+const Navbar = () => {
   const { user, logOut } = UserAuth();
+  const movies = useSelector(selectMovieCollection);
   const [search, setSearch] = useState("");
   const [onBlur, setOnBlur] = useState(false);
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const Navbar = (props) => {
         params: { query: search?.toLowerCase(), page: 1 },
       })
     );
-    navigate({pathname: "/movie/search", search: `?query=${search?.toLowerCase()}`})
+    navigate({pathname: "/movie/search", search: `?query=${search?.toLowerCase()}&rowID=${movies?.length}`})
   }
 
   return (

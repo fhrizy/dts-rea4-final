@@ -2,24 +2,19 @@ import React from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
-import { db } from '../firebase';
-import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
+import { SAVEDMOVIE } from "../store/reducers/movieReducer";
+import { UPDATESAVEDMOVIE } from '../store/reducers/accountReducer';
 
 const Movie = ({ item, index }) => {
   const { user } = UserAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const movieID = doc(db, 'users', `${user?.email}`);
-
-  const saveShow = async () => {
+  const saveShow = () => {
     if (user?.email) {
-      await updateDoc(movieID, {
-        savedShows: arrayUnion({
-          id: item.id,
-          title: item.title,
-          img: item.backdrop_path,
-        }),
-      });
+      dispatch(SAVEDMOVIE({index, id: item.id}));
+      dispatch(UPDATESAVEDMOVIE({rowID: index, ...item}));
     } else {
       alert('Please log in to save a movie');
     }
@@ -27,14 +22,14 @@ const Movie = ({ item, index }) => {
 
   return (
     <>
-      <div onClick={() => navigate(`/movie/detail/${index}-${item?.id}`)} className='w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2'>
+      <div className='w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2'>
         <img
           className='w-full h-auto block'
           src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
           alt={item?.title}
         />
         <div className='absolute top-0 left-0 w-full h-full hover:bg-black/80 opacity-0 hover:opacity-100 text-white'>
-          <p className='white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center'>
+          <p onClick={() => navigate(`/movie/detail/${index}-${item?.id}`)} className='white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center'>
             {item?.title}
           </p>
           <p onClick={saveShow}>

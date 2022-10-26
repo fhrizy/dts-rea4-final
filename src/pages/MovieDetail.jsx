@@ -1,24 +1,33 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectMovieCollection,
   getMovieCollection,
+  selectMovieDetail,
+  movieDetail,
 } from "../store/reducers/movieReducer";
 import Main from "../components/Main";
 import Row from "../components/Row";
 
 function MovieDetail(props) {
+  document.title = "Movie Detail";
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mid } = useParams();
   const movies = useSelector(selectMovieCollection);
+  const movie = useSelector(selectMovieDetail);
   const getIndex = mid?.split("-")[0];
   const getId = mid?.split("-")[1];
-  const movie = movies[getIndex].movies?.filter((x) => x.id === Number(getId));
+  
   useEffect(() => {
+    if (movies.length === 0) {
+      navigate("/");
+    }
+    dispatch(movieDetail({fetchURL: `movie/${getId}?language=en-US`}));
     const params = {
       fetchURL: `movie/${getId}/recommendations?language=en-US`,
-      rowID: "5",
+      rowID: movies?.length,
       title: "Recomendations for you",
     };
     dispatch(getMovieCollection(params));
@@ -27,10 +36,12 @@ function MovieDetail(props) {
   }, [mid]);
 
   return (
-    <>
-      <Main movie={movie[0]} />
-      <Row index={5} movie={movies[5] !== undefined ? movies[5] : {}} />
-    </>
+    movies.length !== 0 && (
+      <>
+        <Main index={getIndex} movie={movie} />
+        <Row index={movies?.length - 1} movie={movies[movies?.length - 1] !== undefined ? movies[movies?.length - 1] : {}} />
+      </>
+    )
   );
 }
 

@@ -47,10 +47,27 @@ const movieReducer = createSlice({
   initialState,
   reducers: {
     SAVEDMOVIE: (state, action) => {
-      state.movieCollection.push(action.payload);
+      const index = action.payload.index;
+      const idMovie = action.payload.id;
+      const indexMovie = state.movieCollection[index].movies.findIndex(
+        (idx) => {
+          return idx.id === idMovie;
+        }
+      );
+      const status = state.movieCollection[index].movies[indexMovie].savedMovie;
+      state.movieCollection[index].movies[indexMovie].savedMovie = !status;
     },
     WATCHLATER: (state, action) => {
-      state.movieCollection.push(action.payload);
+      const index = action.payload.index;
+      const idMovie = action.payload.id;
+      const indexMovie = state.movieCollection[index].movies.findIndex(
+        (idx) => {
+          return idx.id === idMovie;
+        }
+      );
+      const status = state.movieCollection[index].movies[indexMovie].watchLater;
+      state.movieCollection[index].movies[indexMovie].watchLater = !status;
+      state.movieDetail.watchLater = !status;
     },
   },
   extraReducers: (builder) => {
@@ -68,21 +85,22 @@ const movieReducer = createSlice({
       })
       .addCase(searchMovie.fulfilled, (state, action) => {
         if (action.meta.arg.params.page > 1) {
-          state.searchMovie.push(...action.payload.data.results);
+          state.movieCollection[state.movieCollection.length] = {...state.movieCollection[state.movieCollection.length], movies: [...state.movieCollection[6].movies, ...action.payload.data.results]};
         } else {
-          state.searchMovie = action.payload.data.results;
+          state.movieCollection[state.movieCollection.length] = {rowID: state.movieCollection.length, title: "Search", movies: action.payload.data.results};
         }
       })
       .addCase(movieDetail.fulfilled, (state, action) => {
-        state.movieDetail = action.payload.data;
+        state.movieDetail = {
+          savedMovie: false,
+          watchLater: false,
+          ...action.payload.data,
+        };
       });
   },
 });
 
-export const {
-  SAVEDMOVIE,
-  WATCHLATER,
-} = movieReducer.actions;
+export const { SAVEDMOVIE, WATCHLATER } = movieReducer.actions;
 
 // export const {} = movieReducer.actions;
 export const selectMovieCollection = (state) => state.movie.movieCollection;
