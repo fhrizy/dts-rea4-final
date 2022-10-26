@@ -1,7 +1,7 @@
 import React from 'react';
 import SavedShows from '../components/SavedShows';
 
-const Account = () => {
+const Account = (props) => {
   return (
     <>
       <div className='w-full text-white'>

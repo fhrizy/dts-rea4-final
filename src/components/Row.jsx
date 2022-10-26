@@ -1,29 +1,31 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Movie from './Movie';
+import { Link } from 'react-router-dom';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
-const Row = ({ title, fetchURL, rowID }) => {
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    axios.get(fetchURL).then((response) => {
-      setMovies(response.data.results);
-    });
-  }, [fetchURL]);
+const Row = ({ movie, index }) => {
+  const url = movie.fetchURL?.split('?')[0];
+  const link = url?.split("/")[0] === "search" ? 
+    { pathname: `movie/search`, search: `?query=${movie?.title?.toLowerCase()}&rowID=${index}` } : 
+    { pathname: url, search: `?rowID=${index}` };
 
   const slideLeft = () => {
-    var slider = document.getElementById('slider' + rowID);
+    var slider = document.getElementById('slider' + index);
     slider.scrollLeft = slider.scrollLeft - 500;
   };
   const slideRight = () => {
-    var slider = document.getElementById('slider' + rowID);
+    var slider = document.getElementById('slider' + index);
     slider.scrollLeft = slider.scrollLeft + 500;
   };
 
   return (
     <>
-      <h2 className='text-white font-bold md:text-xl p-4'>{title}</h2>
+      <div className='flex flex-row items-center justify-between'>
+        <h2 className='text-white font-bold md:text-xl p-4'>{movie.title}</h2>
+        <Link to={link}>
+          <span className='text-white md:text-xs px-4 cursor-pointer hover:underline'>More...</span>
+        </Link>
+      </div>
       <div className='relative flex items-center group'>
         <MdChevronLeft
           onClick={slideLeft}
@@ -31,11 +33,11 @@ const Row = ({ title, fetchURL, rowID }) => {
           size={40}
         />
         <div
-          id={'slider' + rowID}
+          id={'slider' + index}
           className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide relative'
         >
-          {movies.map((item, id) => (
-            <Movie key={id} item={item} />
+          {movie.movies?.map((item, idx) => (
+            <Movie key={idx} item={item} index={index} />
           ))}
         </div>
         <MdChevronRight
