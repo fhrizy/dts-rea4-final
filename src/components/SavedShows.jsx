@@ -2,9 +2,15 @@ import React from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { UPDATESAVEDMOVIE, UPDATEWATCHLATER } from '../store/reducers/accountReducer';
+import { selectSavedMovie, selectWatchLater } from '../store/reducers/accountReducer';
 
 const SavedShows = ({movie}) => {
+  const getsavedMovie = useSelector(selectSavedMovie);
+  const getwatchLater = useSelector(selectWatchLater);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const slideLeft = () => {
     var slider = document.getElementById('slider');
@@ -14,6 +20,16 @@ const SavedShows = ({movie}) => {
     var slider = document.getElementById('slider');
     slider.scrollLeft = slider.scrollLeft + 500;
   };
+
+  const remove = (id, watchLater, savedMovie) => {
+    const newSavedMovie = getsavedMovie?.movies.filter((movie) => movie.id !== id);
+    const newWatchLater = getwatchLater?.movies.filter((movie) => movie.id !== id);
+    if (movie.rowID === 0){
+      dispatch(UPDATESAVEDMOVIE({savedMovie, movies: newSavedMovie}));
+    } else {
+      dispatch(UPDATEWATCHLATER({watchLater, movies: newWatchLater}));
+    }
+  }
 
   return (
     <>
@@ -28,7 +44,7 @@ const SavedShows = ({movie}) => {
           id={'slider'}
           className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide relative'
         >
-          {movie.movies?.map((item) => (
+          {movie.movies?.map((item, index) => (
             <div
               key={item.id}
               className='w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2'
@@ -42,7 +58,7 @@ const SavedShows = ({movie}) => {
                 <p onClick={() => navigate(`/movie/detail/${item.rowID}-${item?.id}`)} className='white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center'>
                   {item?.title}
                 </p>
-                <p className='absolute text-gray-300 top-4 right-4'><AiOutlineClose /></p>
+                <p onClick={() => remove(item.id, item.watchLater, item.savedMovie)} className='absolute text-gray-300 top-4 right-4'><AiOutlineClose /></p>
               </div>
             </div>
           ))}

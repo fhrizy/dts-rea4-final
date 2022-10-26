@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 const Account = (props) => {
   const savedMovie = useSelector(selectSavedMovie);
   const watchLater = useSelector(selectWatchLater);
+  console.log(savedMovie, watchLater);
   document.title = "Account";
   return (
     <>
@@ -20,7 +21,7 @@ const Account = (props) => {
           <h1 className='text-3xl md:text-5xl font-bold'>My Shows</h1>
         </div>
       </div>
-      {savedMovie?.movies.length === 0 && watchLater?.movies.length === 0 && 
+      {savedMovie?.movies?.length === 0 && watchLater?.movies?.length === 0 && 
       <span className='text-white font-bold'>Tidak ada movie yang ditampilkan...</span>}
       <SavedShows movie={savedMovie} />
       <SavedShows movie={watchLater} />
