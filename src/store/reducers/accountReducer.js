@@ -19,14 +19,15 @@ const accountReducer = createSlice({
   initialState,
   reducers: {
     UPDATESAVEDMOVIE: (state, action) => {
-      if (action.payload.savedMovie) {
+      if (action.payload.remove === true) {
         state.savedMovie.movies = action.payload.movies;
       } else {
         state.savedMovie.movies.push(action.payload);
       }
     },
     UPDATEWATCHLATER: (state, action) => {
-      if (action.payload.watchLater) {
+      console.log(action.payload);
+      if (action.payload.remove === true) {
         state.watchLater.movies = action.payload.movies;
       } else {
         state.watchLater.movies.push(action.payload);
