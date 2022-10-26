@@ -45,7 +45,14 @@ export const movieDetail = createAsyncThunk(
 const movieReducer = createSlice({
   name: "movie",
   initialState,
-  reducers: {},
+  reducers: {
+    SAVEDMOVIE: (state, action) => {
+      state.movieCollection.push(action.payload);
+    },
+    WATCHLATER: (state, action) => {
+      state.movieCollection.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getMovieCollection.fulfilled, (state, action) => {
@@ -71,6 +78,11 @@ const movieReducer = createSlice({
       });
   },
 });
+
+export const {
+  SAVEDMOVIE,
+  WATCHLATER,
+} = movieReducer.actions;
 
 // export const {} = movieReducer.actions;
 export const selectMovieCollection = (state) => state.movie.movieCollection;

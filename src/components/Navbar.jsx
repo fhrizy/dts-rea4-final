@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { IoSearchCircle, IoCloseCircle } from "react-icons/io5";
 import { useDispatch } from "react-redux";
@@ -7,7 +7,6 @@ import { searchMovie } from "../store/reducers/movieReducer";
 
 const Navbar = (props) => {
   const { user, logOut } = UserAuth();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [onBlur, setOnBlur] = useState(false);
   const navigate = useNavigate();

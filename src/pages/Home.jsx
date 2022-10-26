@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMovieCollection, getMovieCollection } from '../store/reducers/movieReducer';
 import Main from '../components/Main'
@@ -12,7 +12,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    requests.map((request) => {
+    requests.forEach((request) => {
       const params = { fetchURL: request.fetchURL, rowID: request.rowID, title: request.title };
       try {
         dispatch(getMovieCollection(params));
@@ -20,7 +20,8 @@ const Home = () => {
         console.log(error)
       }
     })
-  },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[requests])
 
   return (
     <>
